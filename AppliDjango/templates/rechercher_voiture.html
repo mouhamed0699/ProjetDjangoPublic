@@ -1,0 +1,181 @@
+
+{%load static%}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rechercher_Voiture</title>
+    <link rel="stylesheet" href="{% static 'css/rechercheVoiture.css' %}">
+</head>
+<body>
+    <div class="div1">
+        <img src="{% static 'img/C__7_-removebg-preview.png' %}" class="logo" alt="">
+        <ul>
+            {% if 'user_id' in request.session %}
+            <li style="height: 45px;border-radius: 10px;font-weight: bold;background-color: red;color: white;display: flex;align-items: center;padding-right: 10px;padding-left: 10px;margin-top: 30px">
+                <img src="{% static 'img/profil.png' %}" alt="to">
+                <a href="{% url 'Profil' %}">{{ prenom }}</a>
+                <a class="toggle-dropdown-menu header-block no-decoration" href="#" aria-haspopup="true" style="margin-left:7px;color:white">
+                    <span class="point" id="dropdown-toggle" onclick="toggleDropdownMenu()">▾</span>
+                </a>
+                <ul class="ucl" style="min-width: 200px;padding: 5px 10px;background: #fff;border: 1px solid #c8c8c8;box-shadow: 0 2px 2px 0 rgba(0,0,0,0.3);list-style: none;list-style-image: none;border-radius: 4px;position: absolute;right: 0px;top: 105px;z-index: 3;display: none;    flex-direction: column;">
+                    <li>
+                        <a style="color: #0078b0;font: inherit;font-size: inherit;text-decoration: none;-webkit-transition: all 0.1s linear 0s;-moz-transition: all 0.1s linear 0s;transition: all 0.1s linear 0s" href="{% url 'Profil' %}">Profil</a>
+                    </li>
+                    <li>
+                        <a style="color: #0078b0;font: inherit;font-size: inherit;text-decoration: none;-webkit-transition: all 0.1s linear 0s;-moz-transition: all 0.1s linear 0s;transition: all 0.1s linear 0s" href="#">Mes Reservations</a>
+                    </li>
+                    <li>
+                        <a style="color: #0078b0;font: inherit;font-size: inherit;text-decoration: none;-webkit-transition: all 0.1s linear 0s;-moz-transition: all 0.1s linear 0s;transition: all 0.1s linear 0s" href="{% url 'deconnexion' %}">Deconnecter</a>
+                    </li>
+                </ul>
+            </li>
+        {% else %}
+            <li class="ins"><a href="{% url 'inscription' %}">S'inscrire</a></li>
+            <li class="ins"><a href="{% url 'connexion' %}">Se connecter</a></li>
+        {% endif %}
+          <li><a href="{% url 'index' %}">Accueil</a> </li>
+          <li><a href="{% url 'vol' %}"> Vols</a></li>
+          <li><a href="{% url 'voiture' %}">Voitures</a> </li>
+  
+        </ul>
+        
+    </div>
+
+    <h1>Résultats de la recherche de Voitures</h1>
+    {% if voitures_disponibles %}
+    <div class='d1'>
+        
+        {% for voiture in voitures_disponibles %}
+        <ul class='ul'>
+            <img src="{% static voiture.3 %}" class="logoentete" alt="">
+            <li>
+                <span class="hot">  Marque : {{ voiture.0 }}</span>
+                <span class="etoi">
+                    <img src="{% static 'img/etoile.png' %}" class="etoil" alt="">
+                    <img src="{% static 'img/etoile.png' %}" class="etoil" alt="">
+                    <img src="{% static 'img/etoile.png' %}" class="etoil" alt="">
+                    <img src="{% static 'img/etoile.png' %}" class="etoil" alt="">
+                    <img src="{% static 'img/etoile.png' %}" class="etoil" alt="">
+                 </span>
+                <span class="descr">Votre moyen de transport idéal. Réservez dès maintenant ! </span>
+                  <span class="cham">  Modele {{ voiture.2 }} </span> 
+                <span class="mont"> Montant : {{ voiture.1 }} FCFA </span>
+                <button class="btn" onclick="initializeReservationButtons()">Reserver</button>
+                {% if 'user_id' in request.session %}
+                <form method="POST" action="{% url 'reservationVoiture' %}" id="reservation-form-{{ forloop.counter }}">
+                    {% csrf_token %}
+                    <h1>Formulaire de réservation</h1>
+                    <div class="form-group">
+                        <label for="prenom-{{ forloop.counter }}">Prénom :</label>
+                        <input type="text" id="prenom-{{ forloop.counter }}" name="prenom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name-{{ forloop.counter }}">Nom :</label>
+                        <input type="text" id="name-{{ forloop.counter }}" name="nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email-{{ forloop.counter }}">Email :</label>
+                        <input type="email" id="email-{{ forloop.counter }}" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkin-{{ forloop.counter }}">Date de Reservation :</label>
+                        <input type="date" id="checkin-{{ forloop.counter }}" name="DateRs" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkin-{{ forloop.counter }}">Date de Retour :</label>
+                        <input type="date" id="checkin-{{ forloop.counter }}" name="DateRt" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Num-{{ forloop.counter }}">Voiture Numero :</label>
+                        <input type="number" id="Num-{{ forloop.counter }}" name="Num" value="{{ voiture.4 }}" min="{{ voiture.4 }}" max="{{ voiture.4 }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Montant-{{ forloop.counter }}">Montant :</label>
+                        <input type="number" id="Montant-{{ forloop.counter }}" name="Montant" value="{{ voiture.1 }}" min="{{ voiture.1 }}" max="{{ voiture.1 }}" required>
+                    </div>
+                    
+                    <h1 class="h11">Type de Payement</h1>
+                    <div class="form-group">
+                        <label for="Wave" >
+                            <input id="Wave" type="radio" name="options">
+                            <img src="{% static 'img/wave.jpg' %}" class="paye" alt="">
+                        </label>
+                    
+                        <label for="OrangeMoney" >
+                            <input id="OrangeMoney" type="radio" name="options">
+                            <img src="{% static 'img/Orangemoney.jpg' %}" class="paye" alt="">
+                        </label>
+                        
+                        <label for="Free" >
+                            
+                            <input id="Free" type="radio" name="options">
+                            <img src="{% static 'img/free.png' %}" class="paye" alt="">
+                        </label>
+                    </div>
+                    <button class="butt" type="submit">Réserver</button>
+                    <button class="annuler">Annuler</button>
+                </form>
+                {% else %}
+                <form method="POST" action="{% url 'reservationChambre' %}" id="reservation-form-{{ forloop.counter }}" style="width:450px;height:400px">
+                    <h1>Vous ne pouvez pas Reserver</h1>
+                    <p>Veuillez vous <a href="{% url 'connexion' %}" style="color:blue;font-weight:bold"> connecter </a> ou vous <a href="{% url 'inscription' %}" style="color:blue;font-weight:bold">  inscrire </a> pour effectuer une réservation</p>
+                    <button class="annuler">Annuler</button>
+                </form>
+                {% endif %}
+            </li>
+            <br>
+        </ul>
+        {% endfor %}
+
+        {% else %}
+        <p class="non">Aucun Voiture disponible pour les critères de recherche spécifiés.</p>
+
+    {% endif %}
+    </div>
+    <Script>   
+        function initializeReservationButtons() {
+            var reservationButtons = document.querySelectorAll(".btn");
+            var cancelButtons = document.querySelectorAll(".annuler");
+        
+            for (var i = 0; i < reservationButtons.length; i++) {
+                var formId = "reservation-form-" + (i + 1);
+                reservationButtons[i].setAttribute("data-form-id", formId); // Ajoutez cette ligne pour définir l'attribut data-form-id
+        
+                reservationButtons[i].addEventListener("click", function(event) {
+                    var formId = this.getAttribute("data-form-id");
+                    var form = document.getElementById(formId);
+        
+                    if (form) {
+                        form.style.display = "block";
+                    }
+                });
+            }
+        
+            for (var i = 0; i < cancelButtons.length; i++) {
+                cancelButtons[i].addEventListener("click", function(event) {
+                    event.preventDefault();
+        
+                    var form = this.closest("form");
+                    form.style.display = "none";
+                });
+            }
+        }
+        const dropdownToggle = document.getElementById('dropdown-toggle');
+
+          
+        function toggleDropdownMenu() {
+          const dropdownMenu = document.querySelector('.ucl'); 
+      
+          
+          dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+        }
+      
+        
+    </Script>
+</body>
+</html>

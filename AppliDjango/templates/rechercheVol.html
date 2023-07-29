@@ -1,0 +1,69 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats de la recherche de chambre</title>
+    <script src="https://kit.fontawesome.com/845105b0c2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/recherchevol.css' %}">
+</head>
+<body>
+    <div class="div1">
+        <img src="{% static 'img/C__7_-removebg-preview.png' %}" class="logo" alt="">
+        <ul>
+          <li class="ins"><a href="{% url 'inscription' %}">S'inscrire</a> </li>
+          <li class="ins"><a href="{% url 'connexion' %}">Se connecter</a> </li>
+          <li><a href="{% url 'index' %}">Accueil</a> </li>
+          <li><a href="{% url 'vol' %}"> Vols</a></li>
+          <li><a href="{% url 'voiture' %}">Voitures</a> </li>
+  
+        </ul>
+        
+    </div>
+    <h1>Les vols disponibles </h1>
+    {% if vols %}
+        {% for vol in vols %}
+            <div class="div2">
+                <p style="color: white;font-size: 17px;letter-spacing: 0.1em;font-weight: bold;">Meilleur Vol</p>
+                <div class='d1'>
+                    <ul class='ul'>
+                        <li>
+                            <span class="v2">Vol pour le {{ vol.2 }}</span>
+                            <br><br>
+                            <span class="v1">Depart à</span>
+                            <span class="v4">Arrive à</span>
+                            <br>
+                            <span><img src="{% static 'img/alarme.png' %}" class="img1" ></span>
+                            <span class="v11"> {{ vol.0 }}</span>
+                            <span><img src="{% static 'img/avion.png' %}" class="img3" ></span>
+                            <span class="v44"> {{ vol.1 }}</span>
+                            <span><img src="{% static 'img/alarme.png' %}" class="img2" ></span>
+                            <br><br><br>
+                            <span class="v5"> {{ vol.4 }}...</span>
+                            <span class="v6"> {{ vol.5 }}...</span>
+                            <span class="v7"> ({{ vol.6}})</span>
+                            <span class="v8"> ({{ vol.7 }})</span>
+                            <br><br>
+                            <span class="v9"> <span class="v10">Tarif : </span>{{ vol.8 }} XOF</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="d2">
+                    <span class="v12">Voyager en toute sécurité</span>
+                    <span><img src="{% static 'img/cadenas.png' %}" class="img4" ></span>
+                    <br><br><br>
+                    <span><img src="{% static 'img/prix.png' %}" class="img5" ></span>
+                    <button class="btn">Reserver</button>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Aucun vol disponible pour les critères de recherche spécifiés.</p>
+    {% endif %}
+
+    
+</body>
+</html>

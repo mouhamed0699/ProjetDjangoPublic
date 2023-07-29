@@ -1,0 +1,283 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chambres</title>
+    <link rel="stylesheet" href="{% static 'css/chambres.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-grid.min.css' %}">
+</head>
+<body>
+<div class="animations">
+
+  <div class="div1">
+      <img src="{% static 'img/C__7_-removebg-preview.png' %}" class="logoentete" alt="">
+      <ul>
+        {% if 'user_id' in request.session %}
+        <li style=" height: 45px;border-radius: 10px; font-weight: bold;background-color: red; color: white;display: flex; align-items: center;padding-right: 10px;padding-left: 10px;margin-top: 30px">
+          <img  src="{% static 'img/profil.png' %}" alt="to">
+          <a href="{% url 'Profil' %}">{{ prenom }}</a> 
+          <a class="toggle-dropdown-menu header-block no-decoration" href="#" aria-haspopup="true" style="margin-left:7px;color:white">
+            <span class="point" id="dropdown-toggle" onclick="toggleDropdownMenu()">▾</span>
+          </a> 
+          <ul class="ucl" style="min-width: 200px; padding: 5px 10px;background: #fff;border: 1px solid #c8c8c8;box-shadow: 0 2px 2px 0 rgba(0,0,0,0.3);list-style: none;list-style-image: none;
+                list-style-image: none;border-radius: 4px;position: absolute; right: 0px; top: 105px; z-index: 3; display: none;    flex-direction: column;">
+            <li><a style="color: #0078b0;font: inherit;  font-size: inherit;text-decoration: none;-webkit-transition: all 0.1s linear 0s;
+              -moz-transition: all 0.1s linear 0s;transition: all 0.1s linear 0s" href="{% url 'Profil' %}">Profil</a></li>
+            <li><a style="color: #0078b0;font: inherit;  font-size: inherit;text-decoration: none;-webkit-transition: all 0.1s linear 0s;
+                  -moz-transition: all 0.1s linear 0s;transition: all 0.1s linear 0s" href="#">Mes Reservations</a></li>
+            <li><a style="color: #0078b0;font: inherit;  font-size: inherit;text-decoration: none;-webkit-transition: all 0.1s linear 0s;
+              -moz-transition: all 0.1s linear 0s;transition: all 0.1s linear 0s" href="{% url 'deconnexion' %}">Deconnecter</a></li>
+          </ul>
+        </li>
+        {% else %}
+            <li class="ins"><a href="{% url 'inscription' %}">S'inscrire</a></li>
+            <li class="ins"><a href="{% url 'connexion' %}">Se connecter</a></li>
+        {% endif %}
+        <li><a href="{% url 'index' %}">Accueil</a> </li>
+        <li><a href="{% url 'vol' %}"> Vols</a></li>
+        <li><a href="{% url 'voiture' %}">Voitures</a> </li>
+
+      </ul>
+      
+  </div>
+
+</div>
+<div class="container di0">
+  <div class="row">
+    <div class="col-md-12 ">
+      <form method='POST' action="{% url 'rechercher_chambre'%}" class="div10">
+        {% csrf_token %}
+        <div class="div11">
+          <div class="row justify-content-around">
+            <div class="col-md-2 ">
+              <div class="form-group spa">
+              
+                <label class="label1" >Ville</label>
+                <select name="ville" id="select1" class="form-control" required onchange="validateSelection()">
+                  <option value="" disabled selected hidden>Choisir une ville</option>
+                  <option value="Dakar">Dakar</option>
+                  <option value="Paris">Paris</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 ma">
+              <div class="form-group spa">
+              
+                <label class="label2">Hotel</label>
+                <select name="hotel" id="select2" class="form-control" required>
+                  <option value="" disabled selected hidden>Choisir un hotel</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 ma">
+              <div class="form-group spa" >
+                <label class="label2" >Type</label>
+                <select name="type" id="" class="form-control" required>
+                  <option value="" disabled selected hidden>Choisir un type</option>
+                  <option value="Adulte">Adulte</option>
+                  <option value="Enfant">Enfant</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2 ma">
+              <div class="form-group spa">
+                <label class="label2" >Prix</label>
+                <select name="prix" id="" class="form-control" required>
+                  <option value="" disabled selected hidden>Choisir un prix</option>
+                  <option value="20000-100000">20000 - 100000</option>
+                  <option value="100000 - 200000">100000 - 200000</option>
+                  <option value="200000 - 350000">200000 - 350000</option>
+                  <option value="350000-500000">350000-500000</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn1">Rechercher</button>
+      </form>
+      
+      </form>
+    </div>
+  </div>
+</div>
+<div class="container-fluid dcont1">
+  <div class="row  justify-content-around ">
+    <div class="col-10 col-sm-11 col-md-5 col-lg-6 mb8">
+      <p class="remise">-20 % ou plus pour les membres</p>
+
+      <p class="remise1">Au moins 20 % sur votre escapade d’été en vous connectant ou en vous inscrivant pour réserver l’endroit parfait d’ici le 11 juin.*</p>
+
+    </div>
+    <div class="col-10 col-sm-11 col-md-5 col-lg-6 ">
+      <img src="{% static 'img/image1.jpeg' %}"class="image1" alt="">
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="container-fluid dcont1">
+  <div class="row  justify-content-around ">
+    <div class="col-10 col-sm-11 col-md-12 col-lg-12 ">
+      <button class="button1"> Acceder aux prix membres</button>
+    </div>
+    <div class="col-10 col-sm-11 col-md-12 col-lg-12 ">
+          <p class="remise1detail">* Réservez avant le 11 juin 2023 à 23 h 59,
+             heure locale de l’hébergement, et effectuez votre voyage avant le
+              10 octobre 2023. <br> Offre soumise à conditions.  Voir modalités
+              complètes sur le site.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="container-fluid dcont1">
+  <div class="row  justify-content-around ">
+    <div class="col-10 col-sm-11 col-md-12 col-lg-12">
+      <p class="p1">Évadez-vous ce week-end</p>
+    </div>
+    <div class="col-10 col-sm-11 col-md-12 col-lg-12">
+
+      <p class="p2">Organisez une escapade de dernière minute
+        pour un week-end de rêve dans votre hébergement coup de cœur
+        avec les Prix membres.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Tout ce qui est en haut est responsive -->
+<div class="container-fluid dcont1">
+  <div class="row  justify-content-around R">
+    <div class="col-10 col-sm-10 col-md-3 col-lg-3 mb8 image11">
+      <p class="notenom">4/5   <span style="font-weight: normal;">très bien (215 avis),</span> <br>
+          Pullman Teranga, DAKAR
+      </p>
+      <button class="button2"> Prix membre disponible</button>
+    </div>
+    <div class="col-10 col-sm-10 col-md-3 col-lg-3 mb8 image2">
+      <p class="notenom">4.3/5
+          <span style="font-weight: normal;">très bien (305 avis),</span> <br>
+          Terrou Bi, DAKAR
+      </p>
+      <button class="button2"> Prix membre disponible</button>
+    </div>
+    <div class="col-10 col-sm-10 col-md-3 col-lg-3 mb8 image3">
+      <p class="notenom">3.3/5
+          <span style="font-weight: normal;">bien (80 avis),</span> <br>
+          Hotel VDN, DAKAR
+      </p>
+      <button class="button2"> Prix membre disponible</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- autre  -->
+
+<div class="container-fluid dcont1">
+  <div class="row  justify-content-around ">
+    <div class="col-10 col-sm-10 col-md-3 col-lg-3 mb8 image4">
+        <p class="notenom">4.5/5
+
+        <span style="font-weight: normal;">très bien (215 avis),</span> <br>
+        Hotel Radisson, DAKAR
+      </p>
+      <button class="button2"> Prix membre disponible</button>
+    </div>
+    <div class="col-10 col-sm-10 col-md-3 col-lg-3 mb8 image5">
+      <p class="notenom">4/5
+          <span style="font-weight: normal;">très bien (100 avis),</span> <br>
+          Yaas Hotel Almadies, DAKAR
+      </p>
+      <button class="button2"> Prix membre disponible</button>
+    </div>
+    <div class="col-10 col-sm-10 col-md-3 col-lg-3 mb8 image6">
+      <p class="notenom">3./5
+          <span style="font-weight: normal;">bien (115 avis),</span> <br>
+          Le Ndiambour Hôtel et Résidence
+      </p>
+      <button class="button2"> Prix membre disponible</button>
+    </div>
+  </div>
+
+</div>
+<div class="container dcont1 ">
+  <div class=" col-10 col-sm-10 col-md-10 col-lg-10 commu ">
+    <button  class="voirplus">Profitez d'une belle-vue</button>
+
+  </div>
+</div>
+
+<div class="animation2"></div>
+<div class="container dcont1 ">
+  <div class=" col-10 col-sm-10 col-md-10 col-lg-10 commu">
+      <button class="voirplus">Voir plus</button>
+  </div>
+</div>
+
+<div class="container-fluid f">
+  <div class="row  justify-content-around R">
+    <div class="col-11 col-sm-11 col-md-3 col-lg-3">
+      <img class="lo" src="{% static 'img/C__7_-removebg-preview.png' %}" alt=>
+      <div class="contact">
+        <p>Tel :  33  855  23  24 ,  (+221)  77  345  10  20</p>
+        <p>Adresse:  Av Cheikh Anta  Diop</p>
+        <p>Email:  cmdservice@gmail.com</p>
+      </div>
+      <div class="reseaux">
+        <p>Retrouvez nous sur les réseaux sociaux</p>
+        <div class="imRe">
+          <img class="i1" src="{% static 'img/face.jpeg' %}" alt="l1">
+          <img class="i2" src="{% static 'img/insta.jpeg' %}" alt="l3">
+          <img class="i3" src="{% static 'img/whtsap.jpeg' %}" alt="l2">
+          <img class="i4" src="{% static 'img/twitter.jpeg' %}" alt="l4">
+          <img class="i5" src="{% static 'img/linkedin.jpeg' %}" alt="l6">
+        </div>
+      </div>
+    </div>
+    <div class="col-11 col-sm-11 col-md-3 col-lg-3">
+      <p class="pf21">Partenariat</p>
+      <p class="pf22">
+        <span>Aeroport Blaise Diagne</span> </br></br>
+          <span>Aeroport Lepold Sedar Senghor</span> </br></br>
+            <span>Radisson</span> </br></br>
+              <span>VDN</span> </br></br>
+                <span>Diamniadio</span> </br></br>
+                <span>BMW</span> </br></br>
+                  <span>FORD</span> </br>
+      </p>
+    </div>
+    <div class="col-11 col-sm-11 col-md-3 col-lg-3">
+      <p class="pf31">A propos de nous</p>
+      <p class="pf32">
+        CMD est une entreprise proposant un ensemble complet
+        de services comprenant la réservation de vols, la location de
+        voitures et la réservation de chambres d'hôtel. Notre objectif est
+        de rendre votre expérience de voyage agréable en vous offrant des
+        solutions pratiques et adaptées à vos besoins. Faites-nous confiance
+        pour prendre en charge tous les aspects de votre voyage afin que vous
+        puissiez vous concentrer sur la découverte et la détente.
+      </p>
+    </div>
+
+  </div>
+</div>
+<script src="{% static 'js/chambre.js' %}">
+  const dropdownToggle = document.getElementById('dropdown-toggle');
+
+          
+  function toggleDropdownMenu() {
+    const dropdownMenu = document.querySelector('.ucl'); 
+
+    
+    dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+  }
+
+</script>
+</body>
+</html>
